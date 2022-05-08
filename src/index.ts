@@ -1,24 +1,29 @@
 export const expression = (row) => {
   let result = 0;
-  let rowCopy = ifHaveNegateExpression(row);
-  const multiExp = [];
-  // Ex: d'expression à split [1, 2, "NEGATE", "+", 6, "+"] => expression 1 = [1, 2, "NEGATE", "+"] expression 2 =[expression 1,  6, "+"]
-  // séparer le tableau d'expression en micro expression de deux valeur pour ensuite  effectué les règles de calcule
 
-  rowCopy.map((value, i) => {
-    switch (value) {
-      case "+":
-        result = Number(rowCopy[i - 2] + rowCopy[i - 1]);
-        break;
-      case "-":
-        result = Number(rowCopy[i - 2] - rowCopy[i - 1]);
-        break;
-      case "*":
-        result = Number(rowCopy[i - 2] * rowCopy[i - 1]);
-        break;
-      case "/":
-        result = Number(rowCopy[i - 2] / rowCopy[i - 1]);
-        break;
+  let multiExp = [];
+  if (row.length > 4) {
+    row.map((operator, i) => {
+      if (operator === "+" || operator === "-" || operator === "*" || operator === "/") {
+        if (row[i - 1] === "NEGATE") {
+          multiExp.push(row.slice(i - 3, i + 1));
+        } else {
+          multiExp.push(row.slice(i - 1, i + 1));
+        }
+      }
+    });
+  } else {
+    multiExp.push(row);
+  }
+
+  console.log("multiExp after rewrite", multiExp);
+
+  multiExp.forEach((exp, i) => {
+    const resultOfCurrentExp = calculate(ifHaveNegateExpression(exp));
+    if (i + 1 < multiExp.length && i + 1 !== multiExp.length) {
+      multiExp[i + 1].unshift(resultOfCurrentExp);
+    } else {
+      result = resultOfCurrentExp;
     }
   });
   return result;
@@ -43,4 +48,25 @@ export const ifHaveNegateExpression = (exp) => {
     }
   });
   return rowCopy;
+};
+
+export const calculate = (exp) => {
+  let result = 0;
+  exp.map((value, i) => {
+    switch (value) {
+      case "+":
+        result = Number(exp[i - 2] + exp[i - 1]);
+        break;
+      case "-":
+        result = Number(exp[i - 2] - exp[i - 1]);
+        break;
+      case "*":
+        result = Number(exp[i - 2] * exp[i - 1]);
+        break;
+      case "/":
+        result = Number(exp[i - 2] / exp[i - 1]);
+        break;
+    }
+  });
+  return result;
 };

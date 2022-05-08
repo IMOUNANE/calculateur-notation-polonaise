@@ -25,9 +25,13 @@ describe("Test of expression() function  syntax", () => {
     const row = [1, 2, "NEGATE", "+"];
     expect(expression(row)).toEqual(-1);
   });
-  test("test multi  expression", () => {
+  test("test multi  expression 1", () => {
     const row = [1, 2, "NEGATE", "+", 6, "+"];
-    expect(expression(row)).toEqual(-1);
+    expect(expression(row)).toEqual(5);
+  });
+  test("test multi  expression 2", () => {
+    const row = [1, 2, "NEGATE", "+", 6, "+", 3, "/"];
+    expect(expression(row)).toEqual(5 / 3);
   });
 });
 describe("Test of availableExpressions() function ", () => {
