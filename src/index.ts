@@ -2,8 +2,8 @@ export const expression = (row) => {
   let result = 0;
   let rowCopy = ifHaveNegateExpression(row);
   const multiExp = [];
-  // ex d'expression à split [1, 2, "NEGATE", "+", 6, "+"] => expression 1 = [1, 2, "NEGATE", "+"] expression 2 =[expression 1,  6, "+"]
-  // séparer le tableau d'expression en micro expression de deux valeur pour ensuite  effectué les règle de calcule
+  // Ex: d'expression à split [1, 2, "NEGATE", "+", 6, "+"] => expression 1 = [1, 2, "NEGATE", "+"] expression 2 =[expression 1,  6, "+"]
+  // séparer le tableau d'expression en micro expression de deux valeur pour ensuite  effectué les règles de calcule
 
   rowCopy.map((value, i) => {
     switch (value) {
